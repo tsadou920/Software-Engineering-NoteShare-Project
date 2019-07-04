@@ -1,0 +1,176 @@
+function Approve_membership(email)
+    Assert email is valid otherwise
+        return ("Invalid email!")
+    If email is in user_DB then
+        return ("User already exists!")
+    user_DB.add_record(email)
+    return ("User was added successfully and notified!")
+
+function Ban_user(userId)
+    Assert userId is valid otherwise
+        return("Invalid userId!")
+    If userId is in user_DB then
+        set to_ban to user_DB.pop_record(userId)
+        banned_users.add_record(userId)
+        return ("User was sucessfully banned.")
+    return ("User is not in the user_DB")
+
+function Taboo_word(word)
+    Asssert word is valid otherwise
+        return("Invalid word format!")
+    If word is in the taboo_DB then
+        return("Word already banned!")
+    taboo_DB.add(word)
+    return("Word banned successfully!")
+
+function Taboo_suggested_word(word)
+    return call Taboo_word(word)
+
+function Remove_from_taboo(word)
+    Assert word is valid otherwise
+        return("Invalid word format!")
+    If word is in taboo_DB then
+        taboo_DB.delete(word)
+        return("Word succesfully unbanned!")
+    return("Something went wrong, this word is not taboo")
+
+function Un_lock_doc(docId)
+    Assert docId is valid otherwise
+        return ("Invalid document reference!")
+    If doc_DB.find_record(docId).get_status() is unlocked then
+        set doc.set_status() to locked
+        return ("Document locked succesfully!")
+    set doc_DB.find_record(docId).set_status() to unlocked
+    return ("Document unlocked sucessfully!")
+
+function Un_lock_attempt(userId, doc)
+    Assert userId is valid otherwise
+        return ("Invalid userId!")
+    If user_DB.find_record(userId).get_status is admin then
+        return call Unlock_doc(doc)
+    If user_DB.find_record(userId).get_docs.find(doc) is true then
+        return call Unlock_doc(doc)
+    return ("This user does not have (un)lock access to the document")
+
+function Issue_a_warning(userId, message)
+    Assert userId is valid otherwise
+        return ("Invalid userId!")
+    If len(user_DB.find_record(userId).get_warnings) is >= 3 then
+        return call Ban_user(userId)
+    user_DB.find_record(userId).get_warnings.append(message)
+    return("User has been warned!")
+
+function Create_new_doc(userId, docName)
+    Assert userId is in user_DB otherwise
+        return ("Invalid userId!")
+    Assert docName is valid otherwise
+        return ("Invalid document name format!")
+    If doc_DB.find_record(docName) is true then
+        return ("This name is already taken!")
+    set new_docId to doc_DB.add_record(docName).get_Id()
+    user_DB.find_record(userId).docs.append(new_docId)
+    return ("New document created successfully!")
+
+ function Invite_to_doc(userId, docId)
+     Assert userId is in user_DB otherwise
+         return ("invalid userId!")
+     Assert docId is valid otherwise
+         return ("Invalid document format!")
+     If user_DB.find_record(userId).get_docs.find(docId) is true then
+         return ("User is already has access to the document!")
+     If invite_DB.find_record(userId).find(docId) is true then
+         return ("Invitation was already sent to the user")
+     invite_DB.add_record(userId, docId)
+     return ("User is successfully invited!")
+
+ function Remove_from_doc(userId, docId)
+     Assert userId is in user_DB otherwoise
+         return ("Invalid userID!")
+     Assert docId is valid otherwise
+         return ("Invalid document format!")
+     If user_DB.find_record(userId).get_docs.find(doc) is true then
+         user_DB.find_record(userId).docs.delete(doc)
+         return ("User was sucessfullyremoved from the document!")
+     return ("Specified user is not on the document!")
+
+ function Set_doc_status(userId, docId, status)
+     Assert userId is valid otherwise
+         return ("Invalid userID!")
+     Assert docId is valid otherwise
+         return ("Invalid document format!")
+     Assert status is in {"public","shared","restricted","private"} otherwise
+         return ("Invalid status change attempt!")
+     If user_DB.find_record(userId).get_status is admin then
+         doc_DB.find_record(docId).set_status(status)
+     If user_DB.find_record(userId).get_docs().find(doc) is true then
+         doc_DB.find_record(docId).set_status(status)
+     return("You don't have permission to change the document status")
+
+ function Respond_to_invite(inviteId, response)
+     Assert inviteId is in invite_DB otherwise
+         return ("Invalid inviteId!")
+     Assert type(response) is boolean otherwise
+         return ("Invalid response format (must be boolean True for accept or False for decline)!")
+     If response is True then
+         set user to invite_DB.find_record(inviteId)[0]
+         set doc to invite_DB.find_record(inviteId)[1]
+         user_DB.find_record(user).docs.append(doc)
+         invite_DB.delete(inviteId)
+         return ("Invitation successfully accepted!")
+     invite_DB.delete(inviteId)
+     return ("Invitation successfully declined!")
+
+function apply_to_be_ou(email)
+    Assert email is valid otherwise
+        return ("Invalid email!")
+    If email is in user_DB then
+        return ("User already exists!")
+    return ("SU was notified and will get to you shortly")
+    
+    
+function Search_files (file)
+    Assert file is valid otherwise
+        return ("Invalid file!")
+    If file is in the Documents then
+        return file
+    return ("File Not Found!")
+
+function Search_OUs (userId)
+    Assert userId is valid otherwise
+        return("Invalid userId!")
+    If userId is in OUs then
+        return username
+    return ("Ou Not Found!")
+
+function Read_documents(docId)
+    Assert docId is valid otherwise
+        return ("invalid docId!")
+    
+function read_complain_on_docs(docId, message, taboo_word)
+    Assert docId is valid otherwise
+        return("Invalid userId!")
+     return message, taboo_word
+
+function update_doc (docId)
+     Assert docId is valid otherwise
+        return("Invalid userId!")
+     if docId is in documents then
+        doc_DB.update(docId)
+     return ("Document successfully updated"!)
+
+
+function complain_about_ous(userId, message, taboo_word)
+    Assert userId is valid otherwise
+        return("Invalid docId!")
+     return message, taboo_word
+
+
+function access_old_version_docs(docId,oldversion)
+    Assert docId is valid otherwise
+        return("Invalid userId!")
+    Assert oldversion is valid otherwise
+        return("This document doesn't have old version!")
+    If docId is in documents then
+        return oldversion
+
+
